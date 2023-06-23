@@ -284,12 +284,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd844f20d4294556bad2ad39f20d3f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oppositeLeg: {fileID: 1666354568}
   maxDistance: 0.91
   tolerance: 0.001
-  f: 5
-  z: 1
-  r: 0
+  positionParameters:
+    f: 5
+    z: 1
+    r: 0
   yMultiplier: 0.2
   raycastSettings:
     yOffset: 1.5
@@ -298,7 +298,6 @@ MonoBehaviour:
   _target: {fileID: 912670055}
   _root: {fileID: 344066777}
   _attachedBodyOffset: {x: 0, y: 0, z: 0}
-  debug: 0
 --- !u!114 &233088027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,12 +376,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd844f20d4294556bad2ad39f20d3f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oppositeLeg: {fileID: 927635072}
   maxDistance: 0.91
   tolerance: 0.001
-  f: 5
-  z: 1
-  r: 0
+  positionParameters:
+    f: 5
+    z: 1
+    r: 0
   yMultiplier: 0.2
   raycastSettings:
     yOffset: 1.5
@@ -391,7 +390,6 @@ MonoBehaviour:
   _target: {fileID: 1594016771}
   _root: {fileID: 344066777}
   _attachedBodyOffset: {x: 0, y: 0, z: 0}
-  debug: 0
 --- !u!114 &317481248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,22 +432,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1856675104}
-  f: 0.1
-  z: 1
-  r: 0
+  positionTolerance: 0.01
+  rotationTolerance: 0.5
+  positionParameters:
+    f: 1
+    z: 1
+    r: 0
+  rotationParameters:
+    f: 1
+    z: 0.1
+    r: 0
   legsHolder:
   - leg: {fileID: 233088026}
-    offsetCoefficient: 0.7
+    offsetCoefficient: 0
   - leg: {fileID: 761277212}
-    offsetCoefficient: 0.7
+    offsetCoefficient: 0.2
   - leg: {fileID: 927635072}
-    offsetCoefficient: 0.7
+    offsetCoefficient: 0
   - leg: {fileID: 1666354568}
-    offsetCoefficient: 0.7
+    offsetCoefficient: 0.2
   - leg: {fileID: 1496612984}
-    offsetCoefficient: 0.7
+    offsetCoefficient: 0
   - leg: {fileID: 317481247}
-    offsetCoefficient: 0.7
+    offsetCoefficient: 0.2
+  body: {fileID: 1252780045}
 --- !u!4 &344066777 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
@@ -554,6 +560,76 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6538625204701849, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.61389387
+      objectReference: {fileID: 0}
+    - target: {fileID: -6538625204701849, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.6107719
+      objectReference: {fileID: 0}
+    - target: {fileID: -6538625204701849, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.35452244
+      objectReference: {fileID: 0}
+    - target: {fileID: -6538625204701849, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.3527123
+      objectReference: {fileID: 0}
+    - target: {fileID: -6538625204701849, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -150.013
+      objectReference: {fileID: 0}
+    - target: {fileID: -6538625204701849, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90.168
+      objectReference: {fileID: 0}
+    - target: {fileID: -6538625204701849, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90.338
+      objectReference: {fileID: 0}
+    - target: {fileID: 826944219044864138, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.70710397
+      objectReference: {fileID: 0}
+    - target: {fileID: 826944219044864138, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071041
+      objectReference: {fileID: 0}
+    - target: {fileID: 826944219044864138, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0019829583
+      objectReference: {fileID: 0}
+    - target: {fileID: 826944219044864138, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.0019829583
+      objectReference: {fileID: 0}
+    - target: {fileID: 826944219044864138, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -89.679
+      objectReference: {fileID: 0}
+    - target: {fileID: 826944219044864138, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 826944219044864138, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90.002
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
         type: 3}
       propertyPath: m_Name
@@ -629,6 +705,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1252780044}
+    - targetCorrespondingSourceObject: {fileID: 1693608477908744298, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1252780045}
     - targetCorrespondingSourceObject: {fileID: 6361659285276850880, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
         type: 3}
       insertIndex: -1
@@ -708,12 +788,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd844f20d4294556bad2ad39f20d3f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oppositeLeg: {fileID: 1496612984}
   maxDistance: 0.91
   tolerance: 0.001
-  f: 5
-  z: 1
-  r: 0
+  positionParameters:
+    f: 5
+    z: 1
+    r: 0
   yMultiplier: 0.2
   raycastSettings:
     yOffset: 1.5
@@ -722,7 +802,6 @@ MonoBehaviour:
   _target: {fileID: 281788951}
   _root: {fileID: 344066777}
   _attachedBodyOffset: {x: 0, y: 0, z: 0}
-  debug: 0
 --- !u!114 &761277213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1061,12 +1140,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd844f20d4294556bad2ad39f20d3f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oppositeLeg: {fileID: 317481247}
   maxDistance: 0.91
   tolerance: 0.001
-  f: 5
-  z: 1
-  r: 0
+  positionParameters:
+    f: 5
+    z: 1
+    r: 0
   yMultiplier: 0.2
   raycastSettings:
     yOffset: 1.5
@@ -1075,7 +1154,6 @@ MonoBehaviour:
   _target: {fileID: 1503670261}
   _root: {fileID: 344066777}
   _attachedBodyOffset: {x: 0, y: 0, z: 0}
-  debug: 0
 --- !u!114 &927635073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1428,6 +1506,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Weight: 1
   m_Effectors: []
+--- !u!114 &1252780045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345021699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419bf0125c9e480a802718877587c40f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1396934624 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -834179257854335836, guid: c5b10a08f0a9a5446b8d32e9f2302caa,
@@ -1458,12 +1548,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd844f20d4294556bad2ad39f20d3f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oppositeLeg: {fileID: 761277212}
   maxDistance: 0.91
   tolerance: 0.001
-  f: 5
-  z: 1
-  r: 0
+  positionParameters:
+    f: 5
+    z: 1
+    r: 0
   yMultiplier: 0.2
   raycastSettings:
     yOffset: 1.5
@@ -1472,7 +1562,6 @@ MonoBehaviour:
   _target: {fileID: 1573091919}
   _root: {fileID: 344066777}
   _attachedBodyOffset: {x: 0, y: 0, z: 0}
-  debug: 0
 --- !u!114 &1496612985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1660,12 +1749,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd844f20d4294556bad2ad39f20d3f8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oppositeLeg: {fileID: 233088026}
   maxDistance: 0.91
   tolerance: 0.001
-  f: 5
-  z: 1
-  r: 0
+  positionParameters:
+    f: 5
+    z: 1
+    r: 0
   yMultiplier: 0.2
   raycastSettings:
     yOffset: 1.5
@@ -1674,7 +1763,6 @@ MonoBehaviour:
   _target: {fileID: 1814678676}
   _root: {fileID: 344066777}
   _attachedBodyOffset: {x: 0, y: 0, z: 0}
-  debug: 0
 --- !u!114 &1666354569
 MonoBehaviour:
   m_ObjectHideFlags: 0

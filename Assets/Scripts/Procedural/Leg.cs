@@ -16,15 +16,10 @@ namespace Procedural
     [RequireComponent(typeof(ChainIKConstraint))]
     public class Leg : MonoBehaviour
     {
-        [SerializeField] private Leg oppositeLeg;
         [SerializeField, Range(0f, 2f)] private float maxDistance = 0.5f;
         [SerializeField] private float tolerance = 0.001f;
-        [SerializeField] private float f = 1f;
-        [SerializeField] private float z = 1f;
-        [SerializeField] private float r = 0f;
+        [SerializeField] private SecondOrderParameters positionParameters;
         [SerializeField, Range(0.01f, 1f)] private float yMultiplier = 0.2f;
-        
-        
         [SerializeField] private LegRaycastSettings raycastSettings;
 
         [SerializeField, HideInInspector] private ChainIKConstraint _chainIk;
@@ -32,16 +27,12 @@ namespace Procedural
         [SerializeField, HideInInspector] private Transform _root;
         [SerializeField, HideInInspector] private Vector3 _attachedBodyOffset;
         
-        [SerializeField] private bool debug;
-
         private Transform _attachedToBodyTarget;
         private Vector3 _targetPosition;
         private bool _inPosition;
 
         private VectorLinear _vectorLinear;
 
-        // public bool Moving => !_inPosition;
-        
         private void OnValidate()
         {
             _chainIk ??= GetComponent<ChainIKConstraint>();
@@ -51,41 +42,13 @@ namespace Procedural
         {
             _attachedToBodyTarget = Instantiate(_target, _root);
             _attachedToBodyTarget.position = _attachedToBodyTarget.position + _attachedBodyOffset;
-            _vectorLinear = new VectorLinear(f, z, r, _target.position);
+            _vectorLinear = new VectorLinear(positionParameters, _target.position);
         }
 
         private void FixedUpdate()
         {
-            var startPosition = _attachedToBodyTarget.position + _attachedToBodyTarget.up * raycastSettings.yOffset;
-            var ray = new Ray(startPosition, -_attachedToBodyTarget.up);
-
-            if (Physics.Raycast(ray, out var hit, raycastSettings.raycastLength))
-            {
-                if (Vector3.Distance(_targetPosition,  hit.point) > maxDistance)
-                    _targetPosition = hit.point;
-            }
-
-            var distance = GetDistance();
-            
-            if(debug)
-                Debug.Log(distance);
-
-            if (_inPosition && distance > maxDistance)
-            {
-                _inPosition = false;
-            }
-
-            if (!_inPosition)
-            {
-                var lerpPosition = _vectorLinear.Update(Time.deltaTime, _targetPosition);
-                var x = Mathf.PI * Mathf.InverseLerp(maxDistance - tolerance, tolerance, distance);
-                var y = (float) Math.Sin(x) * yMultiplier;
-                
-                _target.position = lerpPosition + _target.up * y; 
-                
-                if (distance <= tolerance)
-                    _inPosition = true;
-            }
+            FindTargetPosition();
+            MoveToTargetPosition();
         }
 
         public void SetRoot(Transform root)
@@ -109,7 +72,42 @@ namespace Procedural
             position += _root.forward.normalized * maxDistance * legHolderOffsetCoefficient;
             _attachedToBodyTarget.position = position;
         }
+        
+        private void MoveToTargetPosition()
+        {
+            var distance = GetDistance();
 
+            if (_inPosition && distance > maxDistance)
+            {
+                _inPosition = false;
+            }
+
+            if (!_inPosition)
+            {
+                var lerpPosition = _vectorLinear.Update(Time.deltaTime, _targetPosition);
+                var x = Mathf.PI * Mathf.InverseLerp(maxDistance - tolerance, tolerance, distance);
+                var y = (float)Math.Sin(x) * yMultiplier;
+
+                _target.position = lerpPosition + _target.up * y;
+
+                if (distance <= tolerance)
+                    _inPosition = true;
+            }
+        }
+
+        private void FindTargetPosition()
+        {
+            var up = _attachedToBodyTarget.up;
+            var startPosition = _attachedToBodyTarget.position + up * raycastSettings.yOffset;
+            var ray = new Ray(startPosition, -up);
+
+            if (Physics.Raycast(ray, out var hit, raycastSettings.raycastLength))
+            {
+                if (Vector3.Distance(_targetPosition, hit.point) > maxDistance)
+                    _targetPosition = hit.point;
+            }
+        }
+        
         private float GetDistance()
         {
             var plane = new Plane(_root.up, _root.position);

@@ -1,10 +1,21 @@
 ﻿using System;
 using SecondOrderLinear;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Procedural
 {
+    [Serializable]
+    public class SecondOrderParameters
+    {
+        [SerializeField] private float f = 1f;
+        [SerializeField] private float z = 1f;
+        [SerializeField] private float r = 0f;
+
+        public float F => f;
+        public float Z => z;
+        public float R => r;
+    }
+    
     public class ProceduralMoving : MonoBehaviour
     {
         [Serializable]
@@ -15,20 +26,27 @@ namespace Procedural
         }
 
         [SerializeField] private Transform target;
-        
-        [SerializeField] private float f = 1f;
-        [SerializeField] private float z = 1f;
-        [SerializeField] private float r = 0f;
+        [SerializeField] private float positionTolerance = 0.01f;
+        [SerializeField] private float rotationTolerance = 0.5f;
+        [SerializeField] private SecondOrderParameters positionParameters;
+        [SerializeField] private SecondOrderParameters rotationParameters;
         
         [SerializeField] private LegHolder[] legsHolder;
-
-        private Vector3 _previousPosition;
-        private Vector3 _targetPosition;
-        private VectorLinear positionLinear;
-        private VectorLinear rotationLinear;
+        [SerializeField] private Body body;
         
+        private Vector3 _targetPosition;
+        private Vector3 _targetDirection;
+
+        private VectorLinear _positionLinear;
+        private VectorLinear _directionLinear;
+        private bool _startMoving;
+        
+        /// <summary>
+        /// Validate fields, find legs into childs
+        /// </summary>
         private void Validate()
         {
+            body = GetComponentInChildren<Body>();
             var array = GetComponentsInChildren<Leg>();
             
             legsHolder = new LegHolder[array.Length];
@@ -54,22 +72,39 @@ namespace Procedural
                 legHolder.leg.SetCoefficient(legHolder.offsetCoefficient);
             }
             
-            positionLinear = new VectorLinear(f, z, r, transform.position);
-            rotationLinear = new VectorLinear(f, z, r, transform.forward);
-
+            _positionLinear = new VectorLinear(positionParameters, transform.position);
+            _directionLinear = new VectorLinear(rotationParameters, transform.forward);
         }
 
         private void FixedUpdate()
         {
-            if(_targetPosition == _previousPosition) return;
+            var position = transform.position;
             
-            var lerpPosition = positionLinear.Update(Time.deltaTime, _targetPosition);
-            var forwardDirection = rotationLinear.Update(Time.deltaTime,(target.position - _previousPosition).normalized);
-            if(forwardDirection != Vector3.zero)
+            if(_targetPosition == position) return;
+            
+            
+            
+            UpdateRotation(position);
+            UpdatePosition(position);
+        }
+
+        private void UpdateRotation(Vector3 previousPosition)
+        {
+            if (Vector3.Distance(_targetPosition, previousPosition) <= rotationTolerance) return;
+
+            var forwardDirection = Vector3.Lerp(transform.forward, _targetDirection,
+                Time.deltaTime);
+            
+            if (forwardDirection != Vector3.zero)
                 transform.forward = forwardDirection;
+        }
+
+        private void UpdatePosition(Vector3 previousPosition)
+        {
+            if (Vector3.Distance(_targetPosition, previousPosition) <= positionTolerance) return;
+            
+            var lerpPosition = _positionLinear.Update(Time.deltaTime, _targetPosition);
             transform.position = lerpPosition;
-                
-                _previousPosition = transform.position;
         }
 
         private void OnDrawGizmos()
@@ -80,6 +115,7 @@ namespace Procedural
         public void MoveToPosition(Vector3 hitInfoPoint)
         {
             _targetPosition = hitInfoPoint;
+            _targetDirection = (_targetPosition - transform.position).normalized;
         }
     }
 }

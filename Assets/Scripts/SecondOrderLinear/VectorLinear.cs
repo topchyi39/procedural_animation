@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Procedural;
+using UnityEngine;
 
 namespace SecondOrderLinear
 {
@@ -17,12 +18,12 @@ namespace SecondOrderLinear
         /// <param name="z">Damping</param>
         /// <param name="r">Accelerating</param>
         /// <param name="x0">Initial position</param>
-        public VectorLinear(float f, float z, float r, Vector3 x0)
+        public VectorLinear(SecondOrderParameters parameters, Vector3 x0)
         {
             var PI = Mathf.PI;
-            k1 = z / (PI * f);
-            k2 = 1 / ((2 * PI * f) * (2 * PI * f));
-            k3 = r * z / 2 * PI * f;
+            k1 = parameters.Z / (PI * parameters.F);
+            k2 = 1 / ((2 * PI * parameters.F) * (2 * PI * parameters.F));
+            k3 = parameters.R * parameters.Z / 2 * PI * parameters.F;
             
             tCritical = 0.8f * (Mathf.Sqrt(4 * k2 + k1 * k1) - k1);
             
