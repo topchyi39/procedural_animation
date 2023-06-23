@@ -36,9 +36,10 @@ namespace Procedural
         
         private Vector3 _targetPosition;
         private Vector3 _targetDirection;
-
+        
         private VectorLinear _positionLinear;
         private VectorLinear _directionLinear;
+        private float _startDistance;
         private bool _startMoving;
         
         /// <summary>
@@ -90,10 +91,11 @@ namespace Procedural
 
         private void UpdateRotation(Vector3 previousPosition)
         {
-            if (Vector3.Distance(_targetPosition, previousPosition) <= rotationTolerance) return;
+            var currentDistanceToTarget = Vector3.Distance(_targetPosition, previousPosition);
+            if (currentDistanceToTarget <= rotationTolerance) return;
 
             var forwardDirection = Vector3.Lerp(transform.forward, _targetDirection,
-                Time.deltaTime);
+                Mathf.InverseLerp(_startDistance, rotationTolerance, currentDistanceToTarget));
             
             if (forwardDirection != Vector3.zero)
                 transform.forward = forwardDirection;
@@ -115,7 +117,9 @@ namespace Procedural
         public void MoveToPosition(Vector3 hitInfoPoint)
         {
             _targetPosition = hitInfoPoint;
-            _targetDirection = (_targetPosition - transform.position).normalized;
+            var position = transform.position;
+            _targetDirection = (_targetPosition - position).normalized;
+            _startDistance = Vector3.Distance(_targetPosition, position);
         }
     }
 }
